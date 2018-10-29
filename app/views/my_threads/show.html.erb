@@ -1,0 +1,22 @@
+<h1>スレッド詳細</h1>
+<p><%= simple_format @my_thread.text %></p>
+
+<%= link_to 'コメント作成',new_my_thread_path, class:'header-menu'%>
+
+<% if @my_thread.comments.any? %>
+	<ul>
+		<% @comments.each do |comment| %>
+		<li>
+			<%= comment.text %>
+			
+			<%= link_to '[x]',
+			my_thread_comment_path(@my_thread, @comment), 
+			method: :delete,
+			class:'command',
+			data:{confirm: 'Sure?'}
+			%>
+
+		</li>
+		<% end %>	
+	</ul>
+<% end %>
