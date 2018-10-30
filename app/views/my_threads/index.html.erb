@@ -1,0 +1,18 @@
+<h2>マイ掲示板</h2>
+
+<%= link_to 'スレッドを追加',new_my_thread_path, class:'header-menu'%>
+
+<ul>
+	<% @my_threads.each do |my_thread| %>
+	<li>
+	<%= link_to my_thread.title, my_thread_comments_path(my_thread)%>
+	<%= link_to '[Edit]',edit_my_thread_path(my_thread), class:'command' %>
+	<%= link_to '[x]',
+	my_thread_path(my_thread), 
+	method: :delete,
+	class:'command',
+	data:{confirm: 'Sure?'}
+		%>
+	</li>
+	<% end %>
+</ul>
