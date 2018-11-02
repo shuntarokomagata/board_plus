@@ -1,56 +1,57 @@
+# frozen_string_literal: true
+
 class MyThreadsController < ApplicationController
+  before_action :login_check, only: [:index]
 
-	before_action :login_check, only:[:index] 
+  def index
+    @my_threads = MyThread.all.order(created_at: 'desc')
+    @myid = session[:user_id]
+  end
 
-	def index
-		@my_threads = MyThread.all.order(created_at: 'desc')
-		@myid = session[:user_id]
-	end
+  def new
+    @my_thread = MyThread.new
+  end
 
-	def new
-		@my_thread = MyThread.new
-	end
+  def create
+    @my_thread = MyThread.new(my_thread_params)
+    @my_thread[:user_id] = session[:user_id]
+    if @my_thread.save
+      redirect_to my_threads_path
+    else
+      render 'new'
 
-	def create
-		@my_thread = MyThread.new(my_thread_params)
-		@my_thread[:user_id] = session[:user_id]
-		if @my_thread.save
-			redirect_to	my_threads_path
-		else
-			render 'new'
-		
-		end
-	end
+    end
+  end
 
-	def edit
-		@my_thread = MyThread.find(params[:id])
-	end
+  def edit
+    @my_thread = MyThread.find(params[:id])
+  end
 
-	def update
-		@my_thread = MyThread.find(params[:id])
-		#User.find_by(email: params[:user][:email], name: params[:user][:name]) 
-		if @my_thread.update(my_thread_params)
-			redirect_to my_threads_path
-		else
-			render 'edit'
-		end
-	end
+  def update
+    @my_thread = MyThread.find(params[:id])
+    if @my_thread.update(my_thread_params)
+      redirect_to my_threads_path
+    else
+      render 'edit'
+    end
+  end
 
-	def destroy
-		@my_thread = MyThread.find(params[:id])
-		@my_thread.destroy
-		redirect_to my_threads_path
-	end
+  def destroy
+    @my_thread = MyThread.find(params[:id])
+    @my_thread.destroy
+    redirect_to my_threads_path
+  end
 
   private
-	def login_check
-  		unless session[:user_id] != nil 
-       		flash[:alert] = "ログインしてください"
-       		redirect_to '/'
-   		end
-    end
 
-	def my_thread_params
-			params.require(:my_thread).permit(:title, :text, :user_id)
-	end
+  def login_check
+    if session[:user_id].nil?
+      flash[:alert] = 'ログインしてください'
+      redirect_to '/'
+    end
+  end
+
+  def my_thread_params
+    params.require(:my_thread).permit(:title, :text, :user_id)
+  end
 end

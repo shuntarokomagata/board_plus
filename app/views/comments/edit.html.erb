@@ -1,22 +1,16 @@
 <h2>コメントを編集</h2>
 <%= form_for @comment, :url => {:action => 'update'}  do |f| %>
 
-<p>
-	<%= f.text_area :text, placeholder:'enter text' %>
+  <p>
+    <%= f.text_area :text, placeholder:'enter text' %>
+  </p>
 
-	<% if @comment.errors.messages[:text].any? %>
-	
-		<span class="error">
-		<%= @comment.errors.messages[:text][0] %>		
-	</span>
+  <p>
+    <%= f.submit %>
+  </p>
 
-	<% end %>
-</p>
-
-<p>
-	<%= f.submit %>
-
-</p>
-
+  <% @comment.errors.full_messages.each do |message| %>
+    <li> <%= message %></li>
+  <% end %>
 
 <% end %>

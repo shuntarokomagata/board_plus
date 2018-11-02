@@ -1,23 +1,19 @@
 <%= form_for @my_thread do |f| %>
-
-<p>
+  <p>
 	<%= f.text_field :title, placeholder:'enter title' %>
-	<% if @my_thread.errors.messages[:title].any? %>
-	<span class="error"><%= @my_thread.errors.messages[:title][0] %></span>
-	<% end %>
-</p>
+  </p>
 
-<p>
+  <p>
 	<%= f.text_area :text, placeholder:'enter text' %>
-	<% if @my_thread.errors.messages[:body].any? %>
-	<span class="error"><%= @my_thread.errors.messages[:title][0] %></span>
-	<% end %>
-</p>
+  </p>
 
-<p>
+  <p>
 	<%= f.submit %>
+  </p>
 
-</p>
+  <% @my_thread.errors.full_messages.each do |message| %>
+      <li> <%= message %></li>
+  <% end %>
 
 
 <% end %>
