@@ -1,4 +1,5 @@
 <h2>スレッド詳細</h2>
+<span>自分のID: <%= @myid %></span>
 <p><%= simple_format @my_thread.text %></p>
 
 <%= link_to 'コメント作成',new_my_thread_comment_path, class:'header-menu'%>
@@ -9,14 +10,18 @@
 		<li>
 			<%= comment.text %>
 
-			<%= link_to '[Edit]',edit_my_thread_comment_path(id: @comment.ids), class:'command' %>
+			<span>投稿者ID: <%= comment.user_id %></span>
 
-            <%= link_to '[x]', my_thread_comment_path(id: @comment.ids), 
-            method: :delete,
-            class:'command',
-            data:{confirm: 'Sure?'}
-            %>
-			
+			<% if comment.user_id == @myid %>
+
+				<%= link_to '[編集]',edit_my_thread_comment_path(id: @comment.ids), class:'command' %>
+
+            	<%= link_to '[削除]',my_thread_comment_path(id: @comment.ids), 
+            	method: :delete,
+            	class:'command',
+            	data:{confirm: 'Sure?'}
+            	%>
+			<% end %>
 
 		</li>
 	<% end %>	
